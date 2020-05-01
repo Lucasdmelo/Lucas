@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
+import { Router } from '@angular/router';
 
 import { Fornecedor } from '../shared/fornecedor';
 
@@ -14,15 +15,15 @@ import { FornecedorService } from '../../../services/fornecedor.services';
 export class FormularioFornecedor implements OnInit {
   formFornecedor: FormGroup;
 
-  objetoRetorno:any;
+  objetoRetorno: any;
     
-  constructor(private formBuilder: FormBuilder, private clienteService: FornecedorService) { }
+  constructor(private formBuilder: FormBuilder, private clienteService: FornecedorService, private router: Router) { }
 
   ngOnInit() {
     this.createForm(new Fornecedor());
-  }  
+  }
   
-  createForm(fornecedor: Fornecedor) { 
+  createForm(fornecedor: Fornecedor) {
     this.formFornecedor = this.formBuilder.group({
       nomeFantasia: [fornecedor.nomeFantasia, Validators.compose([
         Validators.required,
@@ -55,148 +56,148 @@ export class FormularioFornecedor implements OnInit {
     })
   }
   
-    /*validarCampoOnBlur($event) {
-    //valida o campo quando perde o foco
-    if ($event.target.value == "") {
-      //console.log("entrou1")
-      if ($event.target.className.indexOf("invalido") == -1)
-      $event.target.className += " invalido";
-    }
-    else {
-      if ($event.target.value.length <= 2) { 
-      
-      }
-      else
-      $event.target.className = $event.target.className.replace("invalido", '');
-    }
+  /*validarCampoOnBlur($event) {
+  //valida o campo quando perde o foco
+  if ($event.target.value == "") {
+    //console.log("entrou1")
+    if ($event.target.className.indexOf("invalido") == -1)
+    $event.target.className += " invalido";
   }
+  else {
+    if ($event.target.value.length <= 2) { 
+    
+    }
+    else
+    $event.target.className = $event.target.className.replace("invalido", '');
+  }
+}
 
-    validarCampoKeyUp($event) {
-    //tira campo vermelho quando começar a digitar letras > 2
-    if ($event.target.value.length >= 2) {
+  validarCampoKeyUp($event) {
+  //tira campo vermelho quando começar a digitar letras > 2
+  if ($event.target.value.length >= 2) {
+    $event.target.className = $event.target.className.replace("invalido", '');
+  }
+  else {
+    if ($event.target.value.length <= 2) { 
+    
+    }
+    else
       $event.target.className = $event.target.className.replace("invalido", '');
-    }
-    else {
-      if ($event.target.value.length <= 2) { 
-      
-      }
-      else
-        $event.target.className = $event.target.className.replace("invalido", '');
-    }
-    }
-    */
+  }
+  }
+  */
   
 
-    cadastrado() {
+  cadastrado() {
     alert('Cadastrado com sucesso!')
   }
 
-    validaCNPJ(cnpj) {
-      if (cnpj == undefined || cnpj.length == 0) {
-          return false;
-      }
-      cnpj = ((cnpj + "").replace(/[^\d]+/g, '') + "");
-      if (cnpj == '')
-          return false;
-      if (cnpj.length != 14)
-          return false;
-      // Elimina CNPJs invalidos conhecidos
-      if (cnpj == "00000000000000" ||
-              cnpj == "11111111111111" ||
-              cnpj == "22222222222222" ||
-              cnpj == "33333333333333" ||
-              cnpj == "44444444444444" ||
-              cnpj == "55555555555555" ||
-              cnpj == "66666666666666" ||
-              cnpj == "77777777777777" ||
-              cnpj == "88888888888888" ||
-              cnpj == "99999999999999")
-          return false;
-      // Valida DVs
-      var tamanho = cnpj.length - 2;
-      var numeros = cnpj.substring(0, tamanho);
-      var digitos = cnpj.substring(tamanho);
-      var soma = 0;
-      var pos = tamanho - 7;
-      for (var i = tamanho; i >= 1; i--) {
-          soma += numeros.charAt(tamanho - i) * pos--;
-          if (pos < 2)
-              pos = 9;
-      }
-      var resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-      if (resultado != digitos.charAt(0))
-          return false;
+  validaCNPJ(cnpj) {
+    if (cnpj == undefined || cnpj.length == 0) {
+      return false;
+    }
+    cnpj = ((cnpj + "").replace(/[^\d]+/g, '') + "");
+    if (cnpj == '')
+      return false;
+    if (cnpj.length != 14)
+      return false;
+    // Elimina CNPJs invalidos conhecidos
+    if (cnpj == "00000000000000" ||
+      cnpj == "11111111111111" ||
+      cnpj == "22222222222222" ||
+      cnpj == "33333333333333" ||
+      cnpj == "44444444444444" ||
+      cnpj == "55555555555555" ||
+      cnpj == "66666666666666" ||
+      cnpj == "77777777777777" ||
+      cnpj == "88888888888888" ||
+      cnpj == "99999999999999")
+      return false;
+    // Valida DVs
+    var tamanho = cnpj.length - 2;
+    var numeros = cnpj.substring(0, tamanho);
+    var digitos = cnpj.substring(tamanho);
+    var soma = 0;
+    var pos = tamanho - 7;
+    for (var i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2)
+        pos = 9;
+    }
+    var resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0))
+      return false;
 
-      tamanho = tamanho + 1;
-      numeros = cnpj.substring(0, tamanho);
-      soma = 0;
-      pos = tamanho - 7;
-      for (i = tamanho; i >= 1; i--) {
-          soma += numeros.charAt(tamanho - i) * pos--;
-          if (pos < 2)
-              pos = 9;
-      }
-      resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-      if (resultado != digitos.charAt(1))
-          return false;
-      return true;
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2)
+        pos = 9;
     }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1))
+      return false;
+    return true;
+  }
     
     
-    validaCPF(cpf) {
-      cpf = ((cpf + "").replace(/[^\d]+/g, '') + "");
-      if (cpf == '')
-        return false;
+  validaCPF(cpf) {
+    cpf = ((cpf + "").replace(/[^\d]+/g, '') + "");
+    if (cpf == '')
+      return false;
     // Elimina CPFs invalidos conhecidos    
-      if (cpf.length != 11 ||
-        cpf == "00000000000" ||
-        cpf == "11111111111" ||
-        cpf == "22222222222" ||
-        cpf == "33333333333" ||
-        cpf == "44444444444" ||
-        cpf == "55555555555" ||
-        cpf == "66666666666" ||
-        cpf == "77777777777" ||
-        cpf == "88888888888" ||
-        cpf == "99999999999")
-        return false;
-      // Valida 1o digito 
-      var add = 0;
-      for (i = 0; i < 9; i++)
-        add += parseInt(cpf.charAt(i)) * (10 - i);
-      var rev = 11 - (add % 11);
-      if (rev == 10 || rev == 11)
-        rev = 0;
-      if (rev != parseInt(cpf.charAt(9)))
-        return false;
-      // Valida 2o digito 
-      add = 0;
-      for (var i = 0; i < 10; i++)
-        add += parseInt(cpf.charAt(i)) * (11 - i);
-      rev = 11 - (add % 11);
-      if (rev == 10 || rev == 11)
-        rev = 0;
-      if (rev != parseInt(cpf.charAt(10)))
-        return false;
-      return true;
-    }
+    if (cpf.length != 11 ||
+      cpf == "00000000000" ||
+      cpf == "11111111111" ||
+      cpf == "22222222222" ||
+      cpf == "33333333333" ||
+      cpf == "44444444444" ||
+      cpf == "55555555555" ||
+      cpf == "66666666666" ||
+      cpf == "77777777777" ||
+      cpf == "88888888888" ||
+      cpf == "99999999999")
+      return false;
+    // Valida 1o digito 
+    var add = 0;
+    for (i = 0; i < 9; i++)
+      add += parseInt(cpf.charAt(i)) * (10 - i);
+    var rev = 11 - (add % 11);
+    if (rev == 10 || rev == 11)
+      rev = 0;
+    if (rev != parseInt(cpf.charAt(9)))
+      return false;
+    // Valida 2o digito 
+    add = 0;
+    for (var i = 0; i < 10; i++)
+      add += parseInt(cpf.charAt(i)) * (11 - i);
+    rev = 11 - (add % 11);
+    if (rev == 10 || rev == 11)
+      rev = 0;
+    if (rev != parseInt(cpf.charAt(10)))
+      return false;
+    return true;
+  }
   
     
   resultado: string = "SemErro";
   cpfCnpj: boolean;
   validarDados($event) {
-    if ($event.target.value.length < 11) { 
+    if ($event.target.value.length < 11) {
       this.resultado = "alert alert-danger";
       this.cpfCnpj = false;
     }
     else if (this.validaCNPJ(this.formFornecedor.value.cpfCnpj) || this.validaCPF(this.formFornecedor.value.cpfCnpj)) {
-      $event.target.className = $event.target.className.replace (" ng-invalid", "  ng-valid");
+      $event.target.className = $event.target.className.replace(" ng-invalid", "  ng-valid");
       this.resultado = "SemErro";
       this.cpfCnpj = true;
       return true;
     }
-    else if ($event.target.className.indexOf("ng-invalid") == -1 ) {
-      $event.target.className = $event.target.className.replace (" ng-valid", " ng-invalid");
+    else if ($event.target.className.indexOf("ng-invalid") == -1) {
+      $event.target.className = $event.target.className.replace(" ng-valid", " ng-invalid");
       this.resultado = "alert alert-danger";
       this.cpfCnpj = false;
       return false;
@@ -210,7 +211,7 @@ export class FormularioFornecedor implements OnInit {
     if (tamanho <= 14) {
       this.maskCpfCnpj = '000.000.000-000';
     }
-    else if (tamanho >= 15){
+    else if (tamanho >= 15) {
       this.maskCpfCnpj = '00.000.000/0000-00';
     }
   }
@@ -229,12 +230,44 @@ export class FormularioFornecedor implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formFornecedor.value)
-
-    this.clienteService.saveFornecedor(this.formFornecedor.value).subscribe(
-      (response)=>this.objetoRetorno = response
-    );
-    this.objetoRetorno = this.objetoRetorno.data.msg.msg
+    if (this.formFornecedor.controls.nomeFantasia.valid && this.formFornecedor.controls.nomeResponsavel.valid && this.cpfCnpj && this.formFornecedor.controls.uf.valid
+      && this.formFornecedor.controls.cidade.valid && this.formFornecedor.controls.endereco.valid
+      && this.formFornecedor.controls.contato.valid && this.formFornecedor.controls.email.valid && this.formFornecedor.controls.senha.valid) {
+      this.clienteService.saveFornecedor(this.formFornecedor.value).subscribe(
+        (response) => this.objetoRetorno = response
+      );
+      this.clienteService.saveFornecedor(this.formFornecedor.value).subscribe(
+        (response: any) => {
+          console.log('Retorno', response.cod)
+          if (response.cod == "200") {
+            this.router.navigate(['/login'])
+            this.resultado = "SemErro"
+          }
+          else if (response.cod == "300") {
+            this.resultado = "alert alert-danger"
+          }
+        }
+      );
+      this.objetoRetorno = this.objetoRetorno.data.msg.msg
+      this.clienteService.saveFornecedor(this.formFornecedor.value).subscribe(
+        (response) => this.objetoRetorno = response
+      );
+      console.log(this.formFornecedor.value);
+    }
+    else {
+      //console.log(this.formCliente.controls.nome.errors);
+      this.formFornecedor.controls.nomeFantasia.markAsTouched();
+      this.formFornecedor.controls.nomeResponsavel.markAsTouched();
+      this.formFornecedor.controls.cpfCnpj.markAsTouched();
+      this.formFornecedor.controls.uf.markAsTouched();
+      this.formFornecedor.controls.cidade.markAsTouched();
+      this.formFornecedor.controls.endereco.markAsTouched();
+      this.formFornecedor.controls.contato.markAsTouched();
+      this.formFornecedor.controls.email.markAsTouched();
+      this.formFornecedor.controls.senha.markAsTouched();
+      this.resultado = "alert alert-danger";
+      console.log("Faltam dados")
+      
+    }
   }
-
 }

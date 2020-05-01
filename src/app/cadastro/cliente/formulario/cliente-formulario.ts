@@ -205,7 +205,7 @@ validaCNPJ(cnpj) {
         //Tentei usar a mesma forma que foi usada no login pra direcionar para a pga home
       this.clienteService.saveCliente(this.formCliente.value).subscribe(
         (response:any)=> {
-          console.log('Retormo', response.cod)
+          console.log('Retorno', response.cod)
           if (response.cod == "200") {
             this.router.navigate(['/login'])
             this.resultado = "SemErro"
